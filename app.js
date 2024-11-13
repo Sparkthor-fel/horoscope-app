@@ -7,7 +7,7 @@ import { getSign, getZodiac } from 'horoscope';
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/horoscope', (req, res) => {
 	const birthday = req.body.bday;
 	
 	if (birthday.lenght != 10) {
