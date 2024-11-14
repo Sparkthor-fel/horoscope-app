@@ -1,57 +1,49 @@
 const request = require("supertest");
 const app = require("./app");
 
+afterAll(() => {
+   app.close();
+});
+
 describe("GET /horoscope", () => {
-	test("Invalid data lenght", (done) => {
-		request(app)
+	it("Invalid data lenght", async () => {
+		const res = await request(app)
 			.get("/horoscope")
-			.expect("Content-Type", /json/)
 			.send({
 				bday: "invalid",
-			})
-			.expect(400)
-			.expect((res) => {
-				res.body.message = "Invalid date format : pls send according yyyy-mm-dd"
 			});
+		expect(res.statusCode).toEqual(400);
+		expect(res.body.message).toEqual("Invalid date format : pls send according yyyy-mm-dd");
 	});
 	
-	test("Invalid date format", (done) => {
-		request(app)
+	it("Invalid date format", async () => {
+		const res = await request(app)
 			.get("/horoscope")
-			.expect("Content-Type", /json/)
 			.send({
 				bday: "1991-in-ds",
-			})
-			.expect(400)
-			.expect((res) => {
-				res.body.message = "Error while parsing date : pls send according yyyy-mm-dd"
 			});
+		expect(res.statusCode).toEqual(400);
+		expect(res.body.message).toEqual("Error while parsing date : pls send according yyyy-mm-dd");
 	});
 	
-	test("Invalid date", (done) => {
-		request(app)
+	it("Invalid date", async () => {
+		const res = await request(app)
 			.get("/horoscope")
-			.expect("Content-Type", /json/)
 			.send({
 				bday: "1991-50-50",
-			})
-			.expect(400)
-			.expect((res) => {
-				res.body.message = "Invalid date entered"
 			});
+		expect(res.statusCode).toEqual(400);
+		expect(res.body.message).toEqual("Invalid date entered");
 	});
 	
-	test("Valid", (done) => {
-		request(app)
+	it("Valid", async () => {
+		const res = await request(app)
 			.get("/horoscope")
-			.expect("Content-Type", /json/)
 			.send({
 				bday: "1991-01-19",
-			})
-			.expect(200)
-			.expect((res) => {
-				res.body.sign = "Capricorn";
-				res.body.zodiac = "Goat";
 			});
+		expect(res.statusCode).toEqual(200);
+		expect(res.body.sign).toEqual("Capricorn");
+		expect(res.body.zodiac).toEqual("Goat");
 	});
 });

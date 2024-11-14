@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.cjs",
   "scripts": {
-    "test": "jest"
+    "test": "jest --runInBand --force-exit"
   },
   "author": "Felicien",
   "license": "ISC",
