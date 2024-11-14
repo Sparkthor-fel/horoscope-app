@@ -1,4 +1,0 @@
-npm install express
-npm install horoscope
-npm install jest
-npm install supertest
