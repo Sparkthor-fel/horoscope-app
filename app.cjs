@@ -11,7 +11,7 @@ app.use(express.json());
 app.get('/horoscope', (req, res) => {
 	let birthdate = req.query.bday;
 	if (birthdate == undefined){
-		res.status(200).send("Send your birthdate at query param bday=yyyy-mm-dd to use horoscpe");
+		res.status(400).send("Send your birthdate at query param bday=yyyy-mm-dd to use horoscpe");
 		return;
 	}
 	
@@ -40,11 +40,12 @@ app.get('/horoscope', (req, res) => {
 });
 
 app.listen(PORT, (error) =>{
-    if(!error)
-        console.log("Server is Successfully Running, and App is listening on port "+ PORT)
-    else 
-        console.log("Error occurred, server can't start", error);
-    }
-);
+	if(!error){
+		console.log("Server is Successfully Running, and App is listening on port "+ PORT);
+	}
+	else{
+		console.log("Error occurred, server can't start", error);
+	}
+});
 
 module.exports = app;

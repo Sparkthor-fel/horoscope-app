@@ -1,0 +1,11 @@
+Simple express Node app which give your zodiac and astrololigcal sign according to your birthdate
+
+To run :
+
+on a terminal type
+npm install
+
+Then 
+node app.cjs
+
+To use, go to localhost:3000/horoscope with as query parameter your birthdate at format yyyy-mm-dd
