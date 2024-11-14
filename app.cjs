@@ -3,32 +3,39 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-import { getSign, getZodiac } from 'horoscope';
+const getSign = require('horoscope').getSign;
+const getZodiac = require('horoscope').getZodiac;
 
 app.use(express.json());
 
 app.get('/horoscope', (req, res) => {
-	const birthday = req.body.bday;
-	
-	if (birthday.lenght != 10) {
-		res.status(400).send("Invalid date format : pls send according yyyy-mm-dd");
+	let birthdate = req.query.bday;
+	if (birthdate == undefined){
+		res.status(200).send("Send your birthdate at query param bday=yyyy-mm-dd to use horoscpe");
+		return;
 	}
 	
-	const year = parseInt(bdate.substring(0,4));
-	const month = parseInt(bdate.substring(5,7));
-	const day = parseInt(bdate.substring(8,10));
+	if (birthdate.length != 10) {
+		res.status(400).send("Invalid date format : pls send according yyyy-mm-dd");
+		return;
+	}
+	
+	let year = parseInt(birthdate.substring(0,4));
+	let month = parseInt(birthdate.substring(5,7));
+	let day = parseInt(birthdate.substring(8,10));
 	
 	if (isNaN(year) || isNaN(month) || isNaN(day)){
 		res.status(400).send("Error while parsing date : pls send according yyyy-mm-dd");
+		return;
 	}
 	
-	const sign = horoscope.getSign(month, day, true);
-	const zodiac = horoscope.getZodiac(year, true);
+	let sign = getSign({ month: month, day: day }, true);
+	let zodiac = getZodiac(year, true);
 	
 	if (sign === null || zodiac === null) {
 		res.status(400).send("Invalid date entered");
+		return;
 	}
-	
 	res.status(200).send({sign: sign, zodiac: zodiac});
 });
 
